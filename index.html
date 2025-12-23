@@ -35,10 +35,14 @@ Aggregates ONLY free & official content. No hosting.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+/* 🔥 YOUR FIREBASE CONFIG */
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID"
+  apiKey: "AIzaSyAOjgaaHwo4P7MD7oyLQtw1azLnGqcPi1o",
+  authDomain: "streamingsite-d48ac.firebaseapp.com",
+  projectId: "streamingsite-d48ac",
+  storageBucket: "streamingsite-d48ac.firebasestorage.app",
+  messagingSenderId: "850460367162",
+  appId: "1:850460367162:web:a88fa2fad2aed7942a9803"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -46,7 +50,7 @@ const db = getFirestore(app);
 
 let allData = [];
 
-async function loadCategory(type) {
+window.loadCategory = async function(type) {
     const snapshot = await getDocs(collection(db, type));
     allData = snapshot.docs.map(doc => doc.data());
     render(allData);
@@ -61,11 +65,12 @@ function render(items) {
     `).join("");
 }
 
-function searchContent() {
+window.searchContent = function() {
     const q = document.getElementById("search").value.toLowerCase();
     render(allData.filter(i => i.title.toLowerCase().includes(q)));
 }
 
+/* Load movies by default */
 loadCategory('movies');
 
 /* Auto refresh every 30 minutes */

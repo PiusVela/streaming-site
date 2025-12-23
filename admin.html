@@ -1,15 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body { font-family:Arial; padding:20px }
-input, select, button { padding:10px; margin:5px }
+body { font-family:Arial; background:#f5f5f5; padding:20px }
+input, select, button {
+  padding:10px;
+  margin:5px 0;
+  width:100%;
+}
+button {
+  background:#e50914;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+.container {
+  max-width:400px;
+  background:white;
+  padding:20px;
+  border-radius:8px;
+}
 </style>
 </head>
+
 <body>
 
-<h2>Admin – Add Content</h2>
+<div class="container">
+<h2>Admin – Add Streaming Content</h2>
 
 <select id="category">
   <option value="movies">Movies</option>
@@ -18,27 +39,45 @@ input, select, button { padding:10px; margin:5px }
 
 <input id="title" placeholder="Video title">
 <input id="videoId" placeholder="YouTube Video ID">
-<button onclick="add()">Add</button>
+<button onclick="addContent()">Add Content</button>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+/* 🔥 YOUR FIREBASE CONFIG */
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID"
+  apiKey: "AIzaSyAOjgaaHwo4P7MD7oyLQtw1azLnGqcPi1o",
+  authDomain: "streamingsite-d48ac.firebaseapp.com",
+  projectId: "streamingsite-d48ac",
+  storageBucket: "streamingsite-d48ac.firebasestorage.app",
+  messagingSenderId: "850460367162",
+  appId: "1:850460367162:web:a88fa2fad2aed7942a9803"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function add() {
-  await addDoc(collection(db, document.getElementById("category").value), {
-    title: title.value,
-    videoId: videoId.value
+window.addContent = async function() {
+  const category = document.getElementById("category").value;
+  const title = document.getElementById("title").value;
+  const videoId = document.getElementById("videoId").value;
+
+  if (!title || !videoId) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  await addDoc(collection(db, category), {
+    title,
+    videoId,
+    createdAt: Date.now()
   });
-  alert("Added successfully");
+
+  alert("Content added successfully!");
+  document.getElementById("title").value = "";
+  document.getElementById("videoId").value = "";
 }
 </script>
 
