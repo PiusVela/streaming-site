@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<style>
+body { font-family:Arial; padding:20px }
+input, select, button { padding:10px; margin:5px }
+</style>
+</head>
+<body>
+
+<h2>Admin – Add Content</h2>
+
+<select id="category">
+  <option value="movies">Movies</option>
+  <option value="football">Football</option>
+</select>
+
+<input id="title" placeholder="Video title">
+<input id="videoId" placeholder="YouTube Video ID">
+<button onclick="add()">Add</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function add() {
+  await addDoc(collection(db, document.getElementById("category").value), {
+    title: title.value,
+    videoId: videoId.value
+  });
+  alert("Added successfully");
+}
+</script>
+
+</body>
+</html>
